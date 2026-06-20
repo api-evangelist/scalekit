@@ -1,0 +1,272 @@
+{
+  "info": {
+    "name": "Scalekit API",
+    "description": "Scalekit is the authentication platform for B2B SaaS and AI agents - enterprise SSO (SAML/OIDC), SCIM directory provisioning, organizations, users and memberships, roles, M2M auth, and agent / MCP connected accounts and tool execution. Secured with OAuth 2.0 client credentials Bearer tokens.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{bearerToken}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://{{environment}}.scalekit.com" },
+    { "key": "environment", "value": "your-subdomain" },
+    { "key": "clientId", "value": "" },
+    { "key": "clientSecret", "value": "" },
+    { "key": "bearerToken", "value": "" },
+    { "key": "id", "value": "" },
+    { "key": "organizationId", "value": "" },
+    { "key": "directoryId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Issue an access token (client credentials).",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials" },
+                { "key": "client_id", "value": "{{clientId}}" },
+                { "key": "client_secret", "value": "{{clientSecret}}" }
+              ]
+            },
+            "url": { "raw": "{{baseUrl}}/oauth/token", "host": ["{{baseUrl}}"], "path": ["oauth", "token"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Organizations",
+      "item": [
+        {
+          "name": "List organizations.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations"] }
+          }
+        },
+        {
+          "name": "Create an organization.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"display_name\": \"Acme Inc\",\n  \"external_id\": \"org_ext_123\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations"] }
+          }
+        },
+        {
+          "name": "Get an organization.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{id}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{id}}"] }
+          }
+        },
+        {
+          "name": "Update an organization.",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"display_name\": \"Acme Corporation\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{id}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{id}}"] }
+          }
+        },
+        {
+          "name": "Delete an organization.",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{id}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{id}}"] }
+          }
+        },
+        {
+          "name": "Update organization settings.",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"features\": [\n    { \"name\": \"sso\", \"enabled\": true }\n  ]\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{id}}/settings", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{id}}", "settings"] }
+          }
+        },
+        {
+          "name": "Generate an admin portal link.",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{id}}/portal_links", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{id}}", "portal_links"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Connections",
+      "item": [
+        {
+          "name": "List connections.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/connections", "host": ["{{baseUrl}}"], "path": ["api", "v1", "connections"] }
+          }
+        },
+        {
+          "name": "List an organization's connections.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{organizationId}}/connections", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{organizationId}}", "connections"] }
+          }
+        },
+        {
+          "name": "Get a connection.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{organizationId}}/connections/{{id}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{organizationId}}", "connections", "{{id}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Directories",
+      "item": [
+        {
+          "name": "List directories.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{organizationId}}/directories", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{organizationId}}", "directories"] }
+          }
+        },
+        {
+          "name": "List directory users.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{organizationId}}/directories/{{directoryId}}/users", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{organizationId}}", "directories", "{{directoryId}}", "users"] }
+          }
+        },
+        {
+          "name": "List directory groups.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{organizationId}}/directories/{{directoryId}}/groups", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{organizationId}}", "directories", "{{directoryId}}", "groups"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users & Memberships",
+      "item": [
+        {
+          "name": "Add a user to an organization.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"roles\": [\"member\"]\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{baseUrl}}/api/v1/memberships/organizations/{{organizationId}}/users/{{id}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "memberships", "organizations", "{{organizationId}}", "users", "{{id}}"] }
+          }
+        },
+        {
+          "name": "Update a membership.",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"roles\": [\"admin\"]\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{baseUrl}}/api/v1/memberships/organizations/{{organizationId}}/users/{{id}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "memberships", "organizations", "{{organizationId}}", "users", "{{id}}"] }
+          }
+        },
+        {
+          "name": "Remove a user from an organization.",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/memberships/organizations/{{organizationId}}/users/{{id}}", "host": ["{{baseUrl}}"], "path": ["api", "v1", "memberships", "organizations", "{{organizationId}}", "users", "{{id}}"] }
+          }
+        },
+        {
+          "name": "Resend a user invitation.",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/invites/organizations/{{organizationId}}/users/{{id}}/resend", "host": ["{{baseUrl}}"], "path": ["api", "v1", "invites", "organizations", "{{organizationId}}", "users", "{{id}}", "resend"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "List organization roles.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{organizationId}}/roles", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{organizationId}}", "roles"] }
+          }
+        },
+        {
+          "name": "Create an organization role.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"admin\",\n  \"display_name\": \"Administrator\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{baseUrl}}/api/v1/organizations/{{organizationId}}/roles", "host": ["{{baseUrl}}"], "path": ["api", "v1", "organizations", "{{organizationId}}", "roles"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Connected Accounts",
+      "item": [
+        {
+          "name": "List connected accounts.",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/v1/connected_accounts", "host": ["{{baseUrl}}"], "path": ["api", "v1", "connected_accounts"] }
+          }
+        },
+        {
+          "name": "Create a connected account.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"connector\": \"gmail\",\n  \"identifier\": \"user@acme.com\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{baseUrl}}/api/v1/connected_accounts", "host": ["{{baseUrl}}"], "path": ["api", "v1", "connected_accounts"] }
+          }
+        },
+        {
+          "name": "Generate an authorization magic link.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"connector\": \"gmail\",\n  \"identifier\": \"user@acme.com\"\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{baseUrl}}/api/v1/connected_accounts/magic_link", "host": ["{{baseUrl}}"], "path": ["api", "v1", "connected_accounts", "magic_link"] }
+          }
+        },
+        {
+          "name": "Execute a tool.",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"tool_name\": \"gmail_list_messages\",\n  \"identifier\": \"user@acme.com\",\n  \"tool_input\": {}\n}", "options": { "raw": { "language": "json" } } },
+            "url": { "raw": "{{baseUrl}}/api/v1/execute_tool", "host": ["{{baseUrl}}"], "path": ["api", "v1", "execute_tool"] }
+          }
+        }
+      ]
+    }
+  ]
+}

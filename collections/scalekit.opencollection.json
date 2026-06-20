@@ -1,0 +1,237 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Scalekit API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Issue an access token (client credentials).",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{{environment}}.scalekit.com/oauth/token",
+            "body": {
+              "type": "urlencoded",
+              "data": "grant_type=client_credentials&client_id={{clientId}}&client_secret={{clientSecret}}"
+            }
+          },
+          "docs": "Exchange client_id and client_secret for a Bearer access token via the OAuth 2.0 client credentials grant."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List organizations.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/organizations" },
+          "docs": "List organizations."
+        },
+        {
+          "info": { "name": "Create an organization.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://{{environment}}.scalekit.com/api/v1/organizations",
+            "body": { "type": "json", "data": "{\n  \"display_name\": \"Acme Inc\",\n  \"external_id\": \"org_ext_123\"\n}" }
+          },
+          "docs": "Create an organization."
+        },
+        {
+          "info": { "name": "Get an organization.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{id}}" },
+          "docs": "Get organization details."
+        },
+        {
+          "info": { "name": "Update an organization.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{id}}",
+            "body": { "type": "json", "data": "{\n  \"display_name\": \"Acme Corporation\"\n}" }
+          },
+          "docs": "Update an organization."
+        },
+        {
+          "info": { "name": "Delete an organization.", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{id}}" },
+          "docs": "Delete an organization."
+        },
+        {
+          "info": { "name": "Update organization settings.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{id}}/settings",
+            "body": { "type": "json", "data": "{\n  \"features\": [\n    { \"name\": \"sso\", \"enabled\": true }\n  ]\n}" }
+          },
+          "docs": "Toggle feature settings on an organization."
+        },
+        {
+          "info": { "name": "Generate an admin portal link.", "type": "http" },
+          "http": { "method": "PUT", "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{id}}/portal_links" },
+          "docs": "Generate a self-service admin portal link."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Connections",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List connections.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/connections" },
+          "docs": "List SSO connections in the environment."
+        },
+        {
+          "info": { "name": "List an organization's connections.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{organizationId}}/connections" },
+          "docs": "List an organization's SSO connections."
+        },
+        {
+          "info": { "name": "Get a connection.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{organizationId}}/connections/{{id}}" },
+          "docs": "Get a specific SSO connection's configuration and status."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Directories",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List directories.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{organizationId}}/directories" },
+          "docs": "List SCIM directories for an organization."
+        },
+        {
+          "info": { "name": "List directory users.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{organizationId}}/directories/{{directoryId}}/users" },
+          "docs": "Fetch SCIM-provisioned directory users on demand."
+        },
+        {
+          "info": { "name": "List directory groups.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{organizationId}}/directories/{{directoryId}}/groups" },
+          "docs": "Fetch SCIM-provisioned directory groups on demand."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users & Memberships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "Add a user to an organization.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://{{environment}}.scalekit.com/api/v1/memberships/organizations/{{organizationId}}/users/{{id}}",
+            "body": { "type": "json", "data": "{\n  \"roles\": [\"member\"]\n}" }
+          },
+          "docs": "Add a user to an organization."
+        },
+        {
+          "info": { "name": "Update a membership.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{{environment}}.scalekit.com/api/v1/memberships/organizations/{{organizationId}}/users/{{id}}",
+            "body": { "type": "json", "data": "{\n  \"roles\": [\"admin\"]\n}" }
+          },
+          "docs": "Update a user's membership."
+        },
+        {
+          "info": { "name": "Remove a user from an organization.", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://{{environment}}.scalekit.com/api/v1/memberships/organizations/{{organizationId}}/users/{{id}}" },
+          "docs": "Remove a user from an organization."
+        },
+        {
+          "info": { "name": "Resend a user invitation.", "type": "http" },
+          "http": { "method": "PATCH", "url": "https://{{environment}}.scalekit.com/api/v1/invites/organizations/{{organizationId}}/users/{{id}}/resend" },
+          "docs": "Resend a user invitation."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Roles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List organization roles.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{organizationId}}/roles" },
+          "docs": "List an organization's roles."
+        },
+        {
+          "info": { "name": "Create an organization role.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://{{environment}}.scalekit.com/api/v1/organizations/{{organizationId}}/roles",
+            "body": { "type": "json", "data": "{\n  \"name\": \"admin\",\n  \"display_name\": \"Administrator\"\n}" }
+          },
+          "docs": "Create an organization role."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Connected Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": { "name": "List connected accounts.", "type": "http" },
+          "http": { "method": "GET", "url": "https://{{environment}}.scalekit.com/api/v1/connected_accounts" },
+          "docs": "List agent connected accounts."
+        },
+        {
+          "info": { "name": "Create a connected account.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://{{environment}}.scalekit.com/api/v1/connected_accounts",
+            "body": { "type": "json", "data": "{\n  \"connector\": \"gmail\",\n  \"identifier\": \"user@acme.com\"\n}" }
+          },
+          "docs": "Create a connected account."
+        },
+        {
+          "info": { "name": "Generate an authorization magic link.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://{{environment}}.scalekit.com/api/v1/connected_accounts/magic_link",
+            "body": { "type": "json", "data": "{\n  \"connector\": \"gmail\",\n  \"identifier\": \"user@acme.com\"\n}" }
+          },
+          "docs": "Generate an authorization magic link for a connected account."
+        },
+        {
+          "info": { "name": "Execute a tool.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://{{environment}}.scalekit.com/api/v1/execute_tool",
+            "body": { "type": "json", "data": "{\n  \"tool_name\": \"gmail_list_messages\",\n  \"identifier\": \"user@acme.com\",\n  \"tool_input\": {}\n}" }
+          },
+          "docs": "Execute a tool on behalf of a user through a connected account."
+        }
+      ]
+    }
+  ]
+}

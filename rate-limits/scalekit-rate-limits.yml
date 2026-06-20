@@ -1,0 +1,75 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Scalekit
+providerId: scalekit
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Authentication
+- SSO
+- SCIM
+- Identity
+- B2B SaaS
+- Agent Auth
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Scalekit enforces per-environment API rate limits on its management and
+  auth REST endpoints, returning HTTP 429 when a client exceeds its allowance.
+  Usage allowances (M2M tokens, tool calls, MAU/MAO, connections) also act as
+  plan-level quotas. Specific per-endpoint request-per-second / per-minute
+  values are not published in detail and are not reconciled in this artifact.
+notes: >-
+  Confirm specific per-endpoint limits and burst behavior with Scalekit support
+  or in the developer dashboard during reconciliation. The API reference notes
+  that detailed rate-limit documentation is forthcoming.
+sources:
+- https://docs.scalekit.com/apis/
+- https://www.scalekit.com/pricing
+- https://www.scalekit.com/auth-for-saas-pricing
+responseCodes:
+  throttled: 429
+limits:
+- name: Management API Requests
+  scope: environment
+  metric: requests
+  limit: see provider documentation
+  notes: Per-environment request rate on organization/connection/directory/membership endpoints.
+- name: Token Endpoint (client credentials)
+  scope: client
+  metric: requests
+  limit: see provider documentation
+  notes: OAuth 2.0 token issuance at /oauth/token; cache and reuse access tokens until expiry.
+- name: M2M Tokens
+  scope: environment
+  metric: tokens
+  limit: 10000 free per month (then $5 per 1,000)
+  notes: Plan-level quota for machine-to-machine token issuance.
+- name: Agent Tool Calls
+  scope: account
+  metric: requests
+  limit: 5,000/month (Free, hard stop); 200,000/month (Growth)
+  notes: Tool execution via /api/v1/execute_tool counts against the tool-call allowance.
+- name: Monthly Active Users (MAU)
+  scope: environment
+  metric: users
+  limit: 1,000,000 free per month
+  notes: Plan-level quota; usage beyond is billed per MAU.
+- name: Monthly Active Organizations (MAO)
+  scope: environment
+  metric: organizations
+  limit: 100 free per month
+  notes: Plan-level quota; usage beyond is billed per MAO.
+policies:
+- name: Tiered Limits
+  description: Allowances raise as accounts move from Free to Growth and via Enterprise agreements.
+- name: Token Reuse
+  description: Obtain a client-credentials access token and reuse it until expiry rather than minting one per request.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

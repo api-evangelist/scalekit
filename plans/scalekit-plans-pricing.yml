@@ -1,0 +1,265 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Scalekit
+providerId: scalekit
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Authentication
+- SSO
+- SCIM
+- Identity
+- B2B SaaS
+- Agent Auth
+- Plans
+description: >-
+  Scalekit prices its B2B auth platform around enabled connections and usage.
+  The Auth-for-SaaS free tier includes generous Monthly Active User and
+  Organization allowances plus one free SSO connection and one free SCIM
+  directory, with additional enterprise connections priced per-connection on a
+  volume-discounted tier. Social login and unlimited users are included at no
+  extra cost. Agent / M2M auth is metered on tool calls, M2M tokens, and
+  connected accounts, with a separate Free / Growth / Enterprise structure.
+notes: >-
+  Two pricing surfaces are published: connection-based Auth-for-SaaS pricing
+  (SSO/SCIM) and tool-call-based Agent Auth pricing. Verify live numbers on the
+  Scalekit pricing pages during reconciliation; volume-discount breakpoints and
+  per-connection rates are subject to change.
+sources:
+- https://www.scalekit.com/pricing
+- https://www.scalekit.com/auth-for-saas-pricing
+- https://docs.scalekit.com/apis/
+plans:
+- id: scalekit-saas-free
+  name: Auth for SaaS - Free
+  type: freemium
+  description: >-
+    Free tier for enterprise auth covering SSO, SCIM, full user management,
+    and M2M, with high MAU/MAO allowances before usage charges begin.
+  entries:
+  - label: Monthly Active Users (MAU)
+    name: mau
+    type: usage
+    metric: users
+    limit: 1000000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free up to 1M MAU, then $0.05/MAU
+    userMultiplied: false
+  - label: Monthly Active Organizations (MAO)
+    name: mao
+    type: usage
+    metric: organizations
+    limit: 100
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free up to 100 MAO, then $1/MAO
+    userMultiplied: false
+  - label: SSO Connection
+    name: sso_connection
+    type: usage
+    metric: connections
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 1 free, then $60/connection (volume discounts apply)
+    userMultiplied: false
+  - label: SCIM Directory
+    name: scim_directory
+    type: usage
+    metric: connections
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 1 free, then $60/directory (volume discounts apply)
+    userMultiplied: false
+  - label: M2M Tokens
+    name: m2m_tokens
+    type: usage
+    metric: tokens
+    limit: 10000
+    timeFrame: month
+    geo: global
+    unit: 1000
+    price: 10,000 free/month, then $5 per 1,000 tokens
+    userMultiplied: false
+  - label: Connected Accounts (Agent Auth)
+    name: connected_accounts
+    type: usage
+    metric: accounts
+    limit: 10000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 10k connected accounts free
+    userMultiplied: false
+  elements:
+  - name: Enterprise SSO (SAML/OIDC)
+  - name: SCIM Directory Provisioning
+  - name: Social Login
+  - name: Full Stack User Management
+  - name: Unlimited Dev & Prod Environments
+- id: scalekit-saas-modular-connections
+  name: Modular SSO & SCIM Connections
+  type: usage
+  description: >-
+    Per-connection pricing for SSO and SCIM beyond the free connection, with
+    volume discounts as enabled connection count grows. Disabled connections
+    are not billed.
+  entries:
+  - label: Connections 2-15
+    name: connections_tier_1
+    type: usage
+    metric: connections
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $60/connection
+    userMultiplied: false
+  - label: Connections 16-30
+    name: connections_tier_2
+    type: usage
+    metric: connections
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $45/connection (25% off)
+    userMultiplied: false
+  - label: Connections 31-50
+    name: connections_tier_3
+    type: usage
+    metric: connections
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $35/connection (40% off)
+    userMultiplied: false
+  - label: Connections 51-100
+    name: connections_tier_4
+    type: usage
+    metric: connections
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $30/connection (50% off)
+    userMultiplied: false
+  elements:
+  - name: SSO Connections
+  - name: SCIM Directories
+- id: scalekit-agent-free
+  name: Agent Auth - Free
+  type: freemium
+  description: >-
+    Free tier for the agent / MCP auth product, metered on tool calls and
+    connected accounts.
+  entries:
+  - label: Tool Calls
+    name: tool_calls_free
+    type: usage
+    metric: requests
+    limit: 5000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 5,000 tool calls/month (hard stop)
+    userMultiplied: false
+  - label: Connected Accounts
+    name: connected_accounts_free
+    type: usage
+    metric: accounts
+    limit: 25
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: up to 25 connected accounts
+    userMultiplied: false
+  elements:
+  - name: 100+ Pre-built Connectors
+  - name: Agent Playground
+  - name: Community + Email Support
+- id: scalekit-agent-growth
+  name: Agent Auth - Growth
+  type: subscription
+  description: >-
+    Paid agent auth plan with a large included tool-call allowance and
+    per-call overage.
+  entries:
+  - label: Base Subscription
+    name: growth_base
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $49/month
+    userMultiplied: false
+  - label: Included Tool Calls
+    name: growth_tool_calls
+    type: usage
+    metric: requests
+    limit: 200000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 200,000/month included, then $0.25 per 1,000 calls
+    userMultiplied: false
+  - label: Custom Domain / White-label (add-on)
+    name: addon_custom_domain
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $99/month
+    userMultiplied: false
+  - label: EU Data Residency (add-on)
+    name: addon_eu_residency
+    type: flat
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $99/month
+    userMultiplied: false
+  elements:
+  - name: Unlimited Connected Accounts
+  - name: Custom Connectors & API Proxy
+  - name: Private Slack Support
+- id: scalekit-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Negotiated volume rates, VPC / on-prem deployment, 99.99% uptime SLA,
+    SIEM integrations, and dedicated support. Contact Scalekit sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Connection & Tool Call Volume
+  - name: VPC / On-Prem Deployment
+  - name: 99.99% Uptime SLA
+  - name: SIEM Integrations
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

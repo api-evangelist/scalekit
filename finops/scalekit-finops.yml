@@ -1,0 +1,118 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Scalekit
+providerId: scalekit
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: true
+tags:
+- Authentication
+- SSO
+- SCIM
+- Identity
+- B2B SaaS
+- Agent Auth
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Scalekit spend. Scalekit bills a blend of connection-based and
+  usage-based charges: per-connection fees for SSO and SCIM (with volume
+  discounts), per-MAU and per-MAO charges above free allowances, per-1,000 M2M
+  tokens, and per-tool-call charges for the Agent Auth product (flat Growth
+  subscription plus per-1,000-call overage). Development environments are not
+  billed; only production usage incurs charges.
+notes: >-
+  Per-connection rates and tool-call overage rates are subject to change; verify
+  against the Scalekit pricing and auth-for-saas-pricing pages during
+  reconciliation.
+sources:
+- https://www.scalekit.com/pricing
+- https://www.scalekit.com/auth-for-saas-pricing
+- https://docs.scalekit.com/apis/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Scalekit
+serviceCategory: Identity and Access Management
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Scalekit
+  ServiceCategory: Identity and Access Management
+  ProviderName: Scalekit
+  PublisherName: Scalekit
+  InvoiceIssuerName: Scalekit
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: sso_connections
+  description: Enabled SSO connections billed per connection above the free connection, with volume discounts.
+  unit: connections
+  aggregation: max
+  dimensions:
+  - environment
+  - organization
+- name: scim_directories
+  description: Enabled SCIM directories billed per directory above the free directory, with volume discounts.
+  unit: connections
+  aggregation: max
+  dimensions:
+  - environment
+  - organization
+- name: monthly_active_users
+  description: Monthly active users billed per MAU above the free allowance.
+  unit: users
+  aggregation: max
+  dimensions:
+  - environment
+- name: monthly_active_organizations
+  description: Monthly active organizations billed per MAO above the free allowance.
+  unit: organizations
+  aggregation: max
+  dimensions:
+  - environment
+- name: m2m_tokens
+  description: Machine-to-machine tokens issued, billed per 1,000 above the free allowance.
+  unit: tokens
+  aggregation: sum
+  dimensions:
+  - environment
+  - client
+- name: connected_accounts
+  description: Agent connected accounts authorized for third-party connectors.
+  unit: accounts
+  aggregation: max
+  dimensions:
+  - environment
+- name: tool_calls
+  description: Agent tool executions, included up to the plan allowance then billed per 1,000.
+  unit: requests
+  aggregation: sum
+  dimensions:
+  - account
+  - connector
+principles:
+- name: Visibility
+  description: Track enabled connection counts, MAU/MAO, M2M token issuance, and tool-call volume against plan allowances.
+- name: Allocation
+  description: Tag connections and connected accounts per customer organization; map to internal cost centers.
+- name: Optimization
+  description: Disable unused SSO/SCIM connections (disabled connections are not billed), reuse M2M access tokens until expiry, and consolidate connections to reach volume-discount tiers.
+- name: Accountability
+  description: Assign owners per environment/organization; review connection counts and tool-call burn monthly against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

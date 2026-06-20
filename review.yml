@@ -1,0 +1,94 @@
+aid: scalekit
+name: Scalekit
+review:
+  question: Does Scalekit expose a documented public WebSocket or streaming API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    Per API Evangelist scope, both WebSocket and HTTP Server-Sent Events (SSE)
+    are in-scope for AsyncAPI modeling when documented. Scalekit documents
+    neither a WebSocket (ws:// / wss://) surface nor an SSE streaming endpoint
+    on its REST API. Scalekit does deliver asynchronous webhook events
+    (directory/SCIM sync, connection lifecycle, organization events) via
+    outbound HTTPS POST callbacks, but webhooks are a publisher-to-subscriber
+    delivery pattern over discrete HTTP requests, not a persistent streaming
+    transport, so no AsyncAPI document was authored. This may be revisited if
+    Scalekit publishes a formal event catalog warranting an event-driven spec.
+findings:
+  summary: |
+    Scalekit does not publish a documented public WebSocket or SSE streaming
+    API. The platform exposes a per-environment REST (HTTPS) management and
+    auth API under https://{environment}.scalekit.com (and .scalekit.dev for
+    development), secured with OAuth 2.0 client-credentials Bearer tokens
+    obtained from /oauth/token. Asynchronous notifications are delivered as
+    outbound webhook callbacks rather than over a bidirectional or
+    server-push streaming connection.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://{environment}.scalekit.com
+      documented: true
+    - protocol: Webhooks
+      scheme: https
+      note: Outbound HTTPS POST event callbacks (directory sync, connection and organization lifecycle). Not a streaming transport.
+      documented: true
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events streaming endpoint is documented.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in Scalekit's API reference or product pages as of the review date.
+  endpointsConfirmedRest:
+    - POST   https://{environment}.scalekit.com/oauth/token
+    - GET    https://{environment}.scalekit.com/api/v1/organizations
+    - POST   https://{environment}.scalekit.com/api/v1/organizations
+    - GET    https://{environment}.scalekit.com/api/v1/organizations/{id}
+    - PATCH  https://{environment}.scalekit.com/api/v1/organizations/{id}
+    - DELETE https://{environment}.scalekit.com/api/v1/organizations/{id}
+    - PATCH  https://{environment}.scalekit.com/api/v1/organizations/{id}/settings
+    - PUT    https://{environment}.scalekit.com/api/v1/organizations/{id}/portal_links
+    - GET    https://{environment}.scalekit.com/api/v1/organizations/{org_id}/roles
+    - POST   https://{environment}.scalekit.com/api/v1/organizations/{org_id}/roles
+    - GET    https://{environment}.scalekit.com/api/v1/connections
+    - GET    https://{environment}.scalekit.com/api/v1/organizations/{organization_id}/connections
+    - GET    https://{environment}.scalekit.com/api/v1/organizations/{organization_id}/connections/{id}
+    - GET    https://{environment}.scalekit.com/api/v1/organizations/{organization_id}/directories
+    - GET    https://{environment}.scalekit.com/api/v1/organizations/{organization_id}/directories/{directory_id}/users
+    - GET    https://{environment}.scalekit.com/api/v1/organizations/{organization_id}/directories/{directory_id}/groups
+    - POST   https://{environment}.scalekit.com/api/v1/memberships/organizations/{organization_id}/users/{id}
+    - PATCH  https://{environment}.scalekit.com/api/v1/memberships/organizations/{organization_id}/users/{id}
+    - DELETE https://{environment}.scalekit.com/api/v1/memberships/organizations/{organization_id}/users/{id}
+    - PATCH  https://{environment}.scalekit.com/api/v1/invites/organizations/{organization_id}/users/{id}/resend
+    - GET    https://{environment}.scalekit.com/api/v1/connected_accounts
+    - POST   https://{environment}.scalekit.com/api/v1/connected_accounts
+    - PUT    https://{environment}.scalekit.com/api/v1/connected_accounts
+    - POST   https://{environment}.scalekit.com/api/v1/connected_accounts/magic_link
+    - POST   https://{environment}.scalekit.com/api/v1/execute_tool
+sources:
+  - url: https://docs.scalekit.com/apis/
+    type: APIReference
+    note: REST API reference; all documented endpoints are HTTPS REST under the per-environment base URL.
+  - url: https://docs.scalekit.com/dev-kit/apis/
+    type: Documentation
+    note: APIs overview; OAuth 2.0 client-credentials auth, no streaming transport documented.
+  - url: https://docs.scalekit.com/directory/scim/quickstart/
+    type: Documentation
+    note: SCIM directory provisioning; async updates surfaced via webhooks, not streaming.
+  - url: https://github.com/scalekit-inc/api-collections
+    type: Collection
+    note: Official Postman / Bruno collections; REST requests only.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE streaming surface exists; asynchronous behavior is
+    webhook-based. Under current scope no AsyncAPI document was authored. The
+    apis.yml catalog reflects the five REST sub-APIs (SSO Connections,
+    Organizations, Directory/SCIM, Users & Memberships, Agent/M2M Auth).
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
