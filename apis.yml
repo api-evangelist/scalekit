@@ -139,6 +139,10 @@ apis:
     (OAuth/API key), generate authorization magic links, and execute tools on
     behalf of users for MCP and agent workflows.
 common:
+- type: Authentication
+  url: authentication/scalekit-authentication.yml
+- type: OAuthScopes
+  url: scopes/scalekit-scopes.yml
 - type: GitHubOrganization
   url: https://github.com/scalekit-inc
 - type: LinkedIn
@@ -153,6 +157,8 @@ common:
   url: rate-limits/scalekit-rate-limits.yml
 - type: FinOps
   url: finops/scalekit-finops.yml
+- type: Blog
+  url: https://www.scalekit.com/blog
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

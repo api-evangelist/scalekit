@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/scalekit-openapi.yml
+docs: https://docs.scalekit.com/apis/
+note: Scalekit's own API is secured with OAuth 2.0 client credentials and publishes
+  no scopes for its endpoints; the scopes documented at
+  https://docs.scalekit.com/guides/m2m/scopes/ are customer-defined permissions
+  for their own API clients, not Scalekit API scopes
+  (https://docs.scalekit.com/apis/).
+schemes:
+- name: oauth2ClientCredentials
+  source: openapi/scalekit-openapi.yml
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://{environment}.scalekit.com/oauth/token
+scopes: []
