@@ -139,6 +139,8 @@ apis:
     (OAuth/API key), generate authorization magic links, and execute tools on
     behalf of users for MCP and agent workflows.
 common:
+- type: AgenticAccess
+  url: agentic-access/scalekit-agentic-access.yml
 - type: DomainSecurity
   url: security/scalekit-domain-security.yml
 - type: Authentication
