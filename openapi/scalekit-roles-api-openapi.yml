@@ -1,0 +1,138 @@
+openapi: 3.0.1
+info:
+  title: Scalekit Admin Portal Roles API
+  description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
+  termsOfService: https://www.scalekit.com/legal/terms-of-service
+  contact:
+    name: Scalekit Support
+    url: https://www.scalekit.com
+    email: support@scalekit.com
+  version: '1.0'
+servers:
+- url: https://{environment}.scalekit.com
+  description: Production environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit environment subdomain.
+- url: https://{environment}.scalekit.dev
+  description: Development environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit development environment subdomain.
+security:
+- bearerAuth: []
+tags:
+- name: Roles
+  description: Organization roles and permissions.
+paths:
+  /api/v1/organizations/{org_id}/roles:
+    parameters:
+    - name: org_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: listRoles
+      tags:
+      - Roles
+      summary: List organization roles
+      responses:
+        '200':
+          description: A list of roles.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRolesResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createRole
+      tags:
+      - Roles
+      summary: Create an organization role
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleRequest'
+      responses:
+        '201':
+          description: Role created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    RoleRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        display_name:
+          type: string
+        description:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        description:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    ListRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 client-credentials access token passed as a Bearer token.
+    oauth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://{environment}.scalekit.com/oauth/token
+          scopes: {}

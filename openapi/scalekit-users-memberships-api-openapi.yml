@@ -1,0 +1,174 @@
+openapi: 3.0.1
+info:
+  title: Scalekit Admin Portal Users & Memberships API
+  description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
+  termsOfService: https://www.scalekit.com/legal/terms-of-service
+  contact:
+    name: Scalekit Support
+    url: https://www.scalekit.com
+    email: support@scalekit.com
+  version: '1.0'
+servers:
+- url: https://{environment}.scalekit.com
+  description: Production environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit environment subdomain.
+- url: https://{environment}.scalekit.dev
+  description: Development environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit development environment subdomain.
+security:
+- bearerAuth: []
+tags:
+- name: Users & Memberships
+  description: Organization user membership lifecycle and invitations.
+paths:
+  /api/v1/memberships/organizations/{organization_id}/users/{id}:
+    parameters:
+    - $ref: '#/components/parameters/OrganizationIdPath'
+    - $ref: '#/components/parameters/UserId'
+    post:
+      operationId: addMembership
+      tags:
+      - Users & Memberships
+      summary: Add a user to an organization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembershipRequest'
+      responses:
+        '201':
+          description: User added to organization.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateMembership
+      tags:
+      - Users & Memberships
+      summary: Update a membership
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembershipRequest'
+      responses:
+        '200':
+          description: Membership updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: removeMembership
+      tags:
+      - Users & Memberships
+      summary: Remove a user from an organization
+      responses:
+        '204':
+          description: User removed.
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/invites/organizations/{organization_id}/users/{id}/resend:
+    parameters:
+    - $ref: '#/components/parameters/OrganizationIdPath'
+    - $ref: '#/components/parameters/UserId'
+    patch:
+      operationId: resendInvite
+      tags:
+      - Users & Memberships
+      summary: Resend a user invitation
+      responses:
+        '200':
+          description: Invitation resent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    UserId:
+      name: id
+      in: path
+      required: true
+      description: User identifier.
+      schema:
+        type: string
+    OrganizationIdPath:
+      name: organization_id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
+  schemas:
+    Membership:
+      type: object
+      properties:
+        user_id:
+          type: string
+        organization_id:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+        membership_status:
+          type: string
+          enum:
+          - PENDING_INVITE
+          - ACTIVE
+    MembershipRequest:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 client-credentials access token passed as a Bearer token.
+    oauth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://{environment}.scalekit.com/oauth/token
+          scopes: {}

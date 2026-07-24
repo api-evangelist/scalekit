@@ -1,0 +1,250 @@
+openapi: 3.0.1
+info:
+  title: Scalekit Admin Portal Organizations API
+  description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
+  termsOfService: https://www.scalekit.com/legal/terms-of-service
+  contact:
+    name: Scalekit Support
+    url: https://www.scalekit.com
+    email: support@scalekit.com
+  version: '1.0'
+servers:
+- url: https://{environment}.scalekit.com
+  description: Production environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit environment subdomain.
+- url: https://{environment}.scalekit.dev
+  description: Development environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit development environment subdomain.
+security:
+- bearerAuth: []
+tags:
+- name: Organizations
+  description: Create and manage tenant organizations.
+paths:
+  /api/v1/organizations:
+    get:
+      operationId: listOrganizations
+      tags:
+      - Organizations
+      summary: List organizations
+      parameters:
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: A list of organizations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganizationsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createOrganization
+      tags:
+      - Organizations
+      summary: Create an organization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrganizationRequest'
+      responses:
+        '201':
+          description: Organization created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/organizations/{id}:
+    parameters:
+    - $ref: '#/components/parameters/OrganizationId'
+    get:
+      operationId: getOrganization
+      tags:
+      - Organizations
+      summary: Get an organization
+      responses:
+        '200':
+          description: The organization.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateOrganization
+      tags:
+      - Organizations
+      summary: Update an organization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationRequest'
+      responses:
+        '200':
+          description: Organization updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteOrganization
+      tags:
+      - Organizations
+      summary: Delete an organization
+      responses:
+        '204':
+          description: Organization deleted.
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    OrganizationId:
+      name: id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
+    PageSize:
+      name: page_size
+      in: query
+      required: false
+      description: Maximum number of results per page.
+      schema:
+        type: integer
+        default: 20
+    PageToken:
+      name: page_token
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
+      schema:
+        type: string
+  schemas:
+    OrganizationSettings:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: sso
+              enabled:
+                type: boolean
+    UpdateOrganizationRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        external_id:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    OrganizationResponse:
+      type: object
+      properties:
+        organization:
+          $ref: '#/components/schemas/Organization'
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+        external_id:
+          type: string
+        display_name:
+          type: string
+        region_code:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        settings:
+          $ref: '#/components/schemas/OrganizationSettings'
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
+    CreateOrganizationRequest:
+      type: object
+      required:
+      - display_name
+      properties:
+        display_name:
+          type: string
+        external_id:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+    ListOrganizationsResponse:
+      type: object
+      properties:
+        organizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organization'
+        next_page_token:
+          type: string
+        total_size:
+          type: integer
+  responses:
+    Unauthorized:
+      description: Authentication failed or access token missing/expired.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 client-credentials access token passed as a Bearer token.
+    oauth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://{environment}.scalekit.com/oauth/token
+          scopes: {}

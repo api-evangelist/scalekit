@@ -1,0 +1,133 @@
+openapi: 3.0.1
+info:
+  title: Scalekit Admin Portal Organization Settings API
+  description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
+  termsOfService: https://www.scalekit.com/legal/terms-of-service
+  contact:
+    name: Scalekit Support
+    url: https://www.scalekit.com
+    email: support@scalekit.com
+  version: '1.0'
+servers:
+- url: https://{environment}.scalekit.com
+  description: Production environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit environment subdomain.
+- url: https://{environment}.scalekit.dev
+  description: Development environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit development environment subdomain.
+security:
+- bearerAuth: []
+tags:
+- name: Organization Settings
+  description: Toggle feature settings on an organization.
+paths:
+  /api/v1/organizations/{id}/settings:
+    parameters:
+    - $ref: '#/components/parameters/OrganizationId'
+    patch:
+      operationId: updateOrganizationSettings
+      tags:
+      - Organization Settings
+      summary: Update organization settings
+      description: Toggle feature settings (e.g. sso, scim, directory_sync) on an organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationSettings'
+      responses:
+        '200':
+          description: Settings updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    OrganizationId:
+      name: id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
+  schemas:
+    OrganizationSettings:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: sso
+              enabled:
+                type: boolean
+    OrganizationResponse:
+      type: object
+      properties:
+        organization:
+          $ref: '#/components/schemas/Organization'
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+        external_id:
+          type: string
+        display_name:
+          type: string
+        region_code:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        settings:
+          $ref: '#/components/schemas/OrganizationSettings'
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 client-credentials access token passed as a Bearer token.
+    oauth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://{environment}.scalekit.com/oauth/token
+          scopes: {}

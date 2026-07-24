@@ -1,0 +1,96 @@
+openapi: 3.0.1
+info:
+  title: Scalekit Admin Portal API
+  description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
+  termsOfService: https://www.scalekit.com/legal/terms-of-service
+  contact:
+    name: Scalekit Support
+    url: https://www.scalekit.com
+    email: support@scalekit.com
+  version: '1.0'
+servers:
+- url: https://{environment}.scalekit.com
+  description: Production environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit environment subdomain.
+- url: https://{environment}.scalekit.dev
+  description: Development environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit development environment subdomain.
+security:
+- bearerAuth: []
+tags:
+- name: Admin Portal
+  description: Generate self-service admin portal links.
+paths:
+  /api/v1/organizations/{id}/portal_links:
+    parameters:
+    - $ref: '#/components/parameters/OrganizationId'
+    put:
+      operationId: createPortalLink
+      tags:
+      - Admin Portal
+      summary: Generate an admin portal link
+      description: Generate a self-service admin portal link that an organization administrator can use to configure SSO and SCIM without leaving your application.
+      responses:
+        '200':
+          description: Portal link generated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortalLink'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    OrganizationId:
+      name: id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+    PortalLink:
+      type: object
+      properties:
+        location:
+          type: string
+          format: uri
+          description: The admin portal URL.
+        expire_time:
+          type: string
+          format: date-time
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 client-credentials access token passed as a Bearer token.
+    oauth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://{environment}.scalekit.com/oauth/token
+          scopes: {}

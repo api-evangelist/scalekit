@@ -1,0 +1,251 @@
+openapi: 3.0.1
+info:
+  title: Scalekit Admin Portal Directories API
+  description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
+  termsOfService: https://www.scalekit.com/legal/terms-of-service
+  contact:
+    name: Scalekit Support
+    url: https://www.scalekit.com
+    email: support@scalekit.com
+  version: '1.0'
+servers:
+- url: https://{environment}.scalekit.com
+  description: Production environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit environment subdomain.
+- url: https://{environment}.scalekit.dev
+  description: Development environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit development environment subdomain.
+security:
+- bearerAuth: []
+tags:
+- name: Directories
+  description: SCIM directories and synced directory users and groups.
+paths:
+  /api/v1/organizations/{organization_id}/directories:
+    parameters:
+    - $ref: '#/components/parameters/OrganizationIdPath'
+    get:
+      operationId: listDirectories
+      tags:
+      - Directories
+      summary: List directories
+      description: List SCIM directories configured for an organization.
+      responses:
+        '200':
+          description: A list of directories.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDirectoriesResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/organizations/{organization_id}/directories/{directory_id}:
+    parameters:
+    - $ref: '#/components/parameters/OrganizationIdPath'
+    - $ref: '#/components/parameters/DirectoryId'
+    get:
+      operationId: getDirectory
+      tags:
+      - Directories
+      summary: Get a directory
+      responses:
+        '200':
+          description: The directory.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Directory'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/organizations/{organization_id}/directories/{directory_id}/users:
+    parameters:
+    - $ref: '#/components/parameters/OrganizationIdPath'
+    - $ref: '#/components/parameters/DirectoryId'
+    get:
+      operationId: listDirectoryUsers
+      tags:
+      - Directories
+      summary: List directory users
+      description: Fetch users provisioned via SCIM into a directory on demand.
+      parameters:
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: A list of directory users.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDirectoryUsersResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v1/organizations/{organization_id}/directories/{directory_id}/groups:
+    parameters:
+    - $ref: '#/components/parameters/OrganizationIdPath'
+    - $ref: '#/components/parameters/DirectoryId'
+    get:
+      operationId: listDirectoryGroups
+      tags:
+      - Directories
+      summary: List directory groups
+      description: Fetch groups provisioned via SCIM into a directory on demand.
+      parameters:
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: A list of directory groups.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDirectoryGroupsResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    DirectoryGroup:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        external_id:
+          type: string
+    ListDirectoryGroupsResponse:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/DirectoryGroup'
+        next_page_token:
+          type: string
+    Directory:
+      type: object
+      properties:
+        id:
+          type: string
+        organization_id:
+          type: string
+        directory_type:
+          type: string
+          example: SCIM
+        directory_provider:
+          type: string
+          example: okta
+        status:
+          type: string
+          enum:
+          - PENDING
+          - ACTIVE
+          - INACTIVE
+        enabled:
+          type: boolean
+        last_sync_time:
+          type: string
+          format: date-time
+    ListDirectoryUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/DirectoryUser'
+        next_page_token:
+          type: string
+        total_size:
+          type: integer
+    DirectoryUser:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        preferred_username:
+          type: string
+        given_name:
+          type: string
+        family_name:
+          type: string
+        active:
+          type: boolean
+        roles:
+          type: array
+          items:
+            type: string
+    ListDirectoriesResponse:
+      type: object
+      properties:
+        directories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Directory'
+        next_page_token:
+          type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+  parameters:
+    OrganizationIdPath:
+      name: organization_id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
+    DirectoryId:
+      name: directory_id
+      in: path
+      required: true
+      description: Directory identifier.
+      schema:
+        type: string
+    PageSize:
+      name: page_size
+      in: query
+      required: false
+      description: Maximum number of results per page.
+      schema:
+        type: integer
+        default: 20
+    PageToken:
+      name: page_token
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
+      schema:
+        type: string
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 client-credentials access token passed as a Bearer token.
+    oauth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://{environment}.scalekit.com/oauth/token
+          scopes: {}

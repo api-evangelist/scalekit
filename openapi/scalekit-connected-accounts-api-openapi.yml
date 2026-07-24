@@ -1,0 +1,267 @@
+openapi: 3.0.1
+info:
+  title: Scalekit Admin Portal Connected Accounts API
+  description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
+  termsOfService: https://www.scalekit.com/legal/terms-of-service
+  contact:
+    name: Scalekit Support
+    url: https://www.scalekit.com
+    email: support@scalekit.com
+  version: '1.0'
+servers:
+- url: https://{environment}.scalekit.com
+  description: Production environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit environment subdomain.
+- url: https://{environment}.scalekit.dev
+  description: Development environment (per-tenant subdomain)
+  variables:
+    environment:
+      default: your-subdomain
+      description: Your Scalekit development environment subdomain.
+security:
+- bearerAuth: []
+tags:
+- name: Connected Accounts
+  description: Agent / MCP connected accounts and tool execution.
+paths:
+  /api/v1/connected_accounts:
+    get:
+      operationId: listConnectedAccounts
+      tags:
+      - Connected Accounts
+      summary: List connected accounts
+      description: List agent connected accounts (authorized third-party connectors).
+      parameters:
+      - $ref: '#/components/parameters/PageSize'
+      - $ref: '#/components/parameters/PageToken'
+      responses:
+        '200':
+          description: A list of connected accounts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListConnectedAccountsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createConnectedAccount
+      tags:
+      - Connected Accounts
+      summary: Create a connected account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectedAccountRequest'
+      responses:
+        '201':
+          description: Connected account created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccount'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateConnectedAccountCredentials
+      tags:
+      - Connected Accounts
+      summary: Update connected account credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectedAccountRequest'
+      responses:
+        '200':
+          description: Credentials updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectedAccount'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/connected_accounts/magic_link:
+    post:
+      operationId: createConnectedAccountMagicLink
+      tags:
+      - Connected Accounts
+      summary: Generate an authorization magic link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MagicLinkRequest'
+      responses:
+        '200':
+          description: Magic link generated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MagicLink'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v1/execute_tool:
+    post:
+      operationId: executeTool
+      tags:
+      - Connected Accounts
+      summary: Execute a tool
+      description: Execute a tool action on behalf of a user through a connected account (e.g. fetch emails, create a CRM record). Core of the agent / MCP auth product.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteToolRequest'
+      responses:
+        '200':
+          description: Tool executed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecuteToolResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    ExecuteToolRequest:
+      type: object
+      required:
+      - tool_name
+      - identifier
+      properties:
+        tool_name:
+          type: string
+        connection_name:
+          type: string
+        identifier:
+          type: string
+          description: The connected account identifier to act on behalf of.
+        tool_input:
+          type: object
+          additionalProperties: true
+    MagicLinkRequest:
+      type: object
+      required:
+      - connector
+      - identifier
+      properties:
+        connector:
+          type: string
+        identifier:
+          type: string
+    ExecuteToolResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+        execution_id:
+          type: string
+    ConnectedAccountRequest:
+      type: object
+      required:
+      - connector
+      - identifier
+      properties:
+        connector:
+          type: string
+        identifier:
+          type: string
+        authorization_details:
+          type: object
+          additionalProperties: true
+    ListConnectedAccountsResponse:
+      type: object
+      properties:
+        connected_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedAccount'
+        next_page_token:
+          type: string
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+    MagicLink:
+      type: object
+      properties:
+        link:
+          type: string
+          format: uri
+        expire_time:
+          type: string
+          format: date-time
+    ConnectedAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        connector:
+          type: string
+          example: gmail
+        identifier:
+          type: string
+        status:
+          type: string
+          enum:
+          - PENDING
+          - ACTIVE
+          - REVOKED
+        authorization_type:
+          type: string
+          enum:
+          - OAUTH2
+          - API_KEY
+        create_time:
+          type: string
+          format: date-time
+  responses:
+    Unauthorized:
+      description: Authentication failed or access token missing/expired.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    PageSize:
+      name: page_size
+      in: query
+      required: false
+      description: Maximum number of results per page.
+      schema:
+        type: integer
+        default: 20
+    PageToken:
+      name: page_token
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 client-credentials access token passed as a Bearer token.
+    oauth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://{environment}.scalekit.com/oauth/token
+          scopes: {}
