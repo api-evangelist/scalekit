@@ -8,7 +8,20 @@ description: Scalekit is the authentication platform for B2B SaaS and AI agents.
   (M2M) auth, and agent / MCP authentication with connected accounts and tool
   execution - all exposed through a per-environment REST API secured with OAuth
   2.0 client credentials.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/scalekit.png
 tags:
 - Authentication
 - SSO
@@ -20,124 +33,240 @@ created: '2026-06-20'
 modified: '2026-06-20'
 specificationVersion: '0.19'
 apis:
-- aid: scalekit:scalekit-sso-connections-api
-  name: Scalekit SSO Connections API
-  tags:
-  - SSO
-  - SAML
-  - OIDC
-  - Connections
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+- aid: scalekit:scalekit-admin-portal-api
+  name: Scalekit Admin Portal API
+  description: Generate self-service admin portal links.
   humanURL: https://docs.scalekit.com/apis/
   baseURL: https://{environment}.scalekit.com
+  tags:
+  - Admin Portal
   properties:
-  - url: https://docs.scalekit.com/sso/quickstart/
-    type: Documentation
-  - url: https://docs.scalekit.com/apis/
-    type: APIReference
-  - url: openapi/scalekit-openapi.yml
-    type: OpenAPI
-  - url: collections/scalekit.postman_collection.json
-    type: PostmanCollection
-  - url: collections/scalekit.opencollection.json
-    type: OpenCollection
-  description: Configure and manage enterprise Single Sign-On connections (SAML
-    and OIDC) per organization, list connections, and retrieve connection status
-    and configuration details.
+  - type: OpenAPI
+    url: openapi/scalekit-admin-portal-api-openapi.yml
+  - type: Documentation
+    url: https://docs.scalekit.com/sso/quickstart/
+  - type: APIReference
+    url: https://docs.scalekit.com/apis/
+  - type: PostmanCollection
+    url: collections/scalekit.postman_collection.json
+  - type: OpenCollection
+    url: collections/scalekit.opencollection.json
+  - type: Documentation
+    url: https://docs.scalekit.com/m2m/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/directory/scim/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/fsa/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/agent-auth/
+- aid: scalekit:scalekit-authentication-api
+  name: Scalekit Authentication API
+  description: OAuth 2.0 client credentials token issuance.
+  humanURL: https://docs.scalekit.com/apis/
+  baseURL: https://{environment}.scalekit.com
+  tags:
+  - Authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/scalekit-authentication-api-openapi.yml
+  - type: Documentation
+    url: https://docs.scalekit.com/sso/quickstart/
+  - type: APIReference
+    url: https://docs.scalekit.com/apis/
+  - type: PostmanCollection
+    url: collections/scalekit.postman_collection.json
+  - type: OpenCollection
+    url: collections/scalekit.opencollection.json
+  - type: Documentation
+    url: https://docs.scalekit.com/m2m/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/directory/scim/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/fsa/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/agent-auth/
+- aid: scalekit:scalekit-connected-accounts-api
+  name: Scalekit Connected Accounts API
+  description: Agent / MCP connected accounts and tool execution.
+  humanURL: https://docs.scalekit.com/apis/
+  baseURL: https://{environment}.scalekit.com
+  tags:
+  - Connected Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/scalekit-connected-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.scalekit.com/sso/quickstart/
+  - type: APIReference
+    url: https://docs.scalekit.com/apis/
+  - type: PostmanCollection
+    url: collections/scalekit.postman_collection.json
+  - type: OpenCollection
+    url: collections/scalekit.opencollection.json
+  - type: Documentation
+    url: https://docs.scalekit.com/m2m/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/directory/scim/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/fsa/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/agent-auth/
+- aid: scalekit:scalekit-connections-api
+  name: Scalekit Connections API
+  description: Enterprise SSO connections (SAML / OIDC).
+  humanURL: https://docs.scalekit.com/apis/
+  baseURL: https://{environment}.scalekit.com
+  tags:
+  - Connections
+  properties:
+  - type: OpenAPI
+    url: openapi/scalekit-connections-api-openapi.yml
+  - type: Documentation
+    url: https://docs.scalekit.com/sso/quickstart/
+  - type: APIReference
+    url: https://docs.scalekit.com/apis/
+  - type: PostmanCollection
+    url: collections/scalekit.postman_collection.json
+  - type: OpenCollection
+    url: collections/scalekit.opencollection.json
+  - type: Documentation
+    url: https://docs.scalekit.com/m2m/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/directory/scim/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/fsa/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/agent-auth/
+- aid: scalekit:scalekit-directories-api
+  name: Scalekit Directories API
+  description: SCIM directories and synced directory users and groups.
+  humanURL: https://docs.scalekit.com/apis/
+  baseURL: https://{environment}.scalekit.com
+  tags:
+  - Directories
+  properties:
+  - type: OpenAPI
+    url: openapi/scalekit-directories-api-openapi.yml
+  - type: Documentation
+    url: https://docs.scalekit.com/sso/quickstart/
+  - type: APIReference
+    url: https://docs.scalekit.com/apis/
+  - type: PostmanCollection
+    url: collections/scalekit.postman_collection.json
+  - type: OpenCollection
+    url: collections/scalekit.opencollection.json
+  - type: Documentation
+    url: https://docs.scalekit.com/m2m/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/directory/scim/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/fsa/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/agent-auth/
+- aid: scalekit:scalekit-organization-settings-api
+  name: Scalekit Organization Settings API
+  description: Toggle feature settings on an organization.
+  humanURL: https://docs.scalekit.com/apis/
+  baseURL: https://{environment}.scalekit.com
+  tags:
+  - Organization Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/scalekit-organization-settings-api-openapi.yml
+  - type: Documentation
+    url: https://docs.scalekit.com/sso/quickstart/
+  - type: APIReference
+    url: https://docs.scalekit.com/apis/
+  - type: PostmanCollection
+    url: collections/scalekit.postman_collection.json
+  - type: OpenCollection
+    url: collections/scalekit.opencollection.json
+  - type: Documentation
+    url: https://docs.scalekit.com/m2m/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/directory/scim/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/fsa/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/agent-auth/
 - aid: scalekit:scalekit-organizations-api
   name: Scalekit Organizations API
+  description: Create and manage tenant organizations.
+  humanURL: https://docs.scalekit.com/apis/
+  baseURL: https://{environment}.scalekit.com
   tags:
   - Organizations
-  - Tenants
-  - Admin Portal
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/scalekit-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.scalekit.com/sso/quickstart/
+  - type: APIReference
+    url: https://docs.scalekit.com/apis/
+  - type: PostmanCollection
+    url: collections/scalekit.postman_collection.json
+  - type: OpenCollection
+    url: collections/scalekit.opencollection.json
+  - type: Documentation
+    url: https://docs.scalekit.com/m2m/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/directory/scim/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/fsa/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/agent-auth/
+- aid: scalekit:scalekit-roles-api
+  name: Scalekit Roles API
+  description: Organization roles and permissions.
   humanURL: https://docs.scalekit.com/apis/
   baseURL: https://{environment}.scalekit.com
-  properties:
-  - url: https://docs.scalekit.com/m2m/quickstart/
-    type: Documentation
-  - url: https://docs.scalekit.com/apis/
-    type: APIReference
-  - url: openapi/scalekit-openapi.yml
-    type: OpenAPI
-  - url: collections/scalekit.postman_collection.json
-    type: PostmanCollection
-  - url: collections/scalekit.opencollection.json
-    type: OpenCollection
-  description: Create, read, update, and delete tenant organizations, toggle
-    per-organization feature settings, and generate self-service admin portal
-    links for SSO and SCIM configuration.
-- aid: scalekit:scalekit-directory-scim-api
-  name: Scalekit Directory / SCIM API
   tags:
-  - SCIM
-  - Directory
-  - Provisioning
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.scalekit.com/directory/scim/quickstart/
-  baseURL: https://{environment}.scalekit.com
+  - Roles
   properties:
-  - url: https://docs.scalekit.com/directory/scim/quickstart/
-    type: Documentation
-  - url: https://docs.scalekit.com/apis/
-    type: APIReference
-  - url: openapi/scalekit-openapi.yml
-    type: OpenAPI
-  - url: collections/scalekit.postman_collection.json
-    type: PostmanCollection
-  - url: collections/scalekit.opencollection.json
-    type: OpenCollection
-  description: List directories, fetch SCIM-provisioned directory users and
-    groups on demand, and keep application user data in sync with the customer's
-    upstream identity provider.
+  - type: OpenAPI
+    url: openapi/scalekit-roles-api-openapi.yml
+  - type: Documentation
+    url: https://docs.scalekit.com/sso/quickstart/
+  - type: APIReference
+    url: https://docs.scalekit.com/apis/
+  - type: PostmanCollection
+    url: collections/scalekit.postman_collection.json
+  - type: OpenCollection
+    url: collections/scalekit.opencollection.json
+  - type: Documentation
+    url: https://docs.scalekit.com/m2m/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/directory/scim/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/fsa/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/agent-auth/
 - aid: scalekit:scalekit-users-memberships-api
   name: Scalekit Users & Memberships API
-  tags:
-  - Users
-  - Memberships
-  - Roles
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  description: Organization user membership lifecycle and invitations.
   humanURL: https://docs.scalekit.com/apis/
   baseURL: https://{environment}.scalekit.com
-  properties:
-  - url: https://docs.scalekit.com/fsa/quickstart/
-    type: Documentation
-  - url: https://docs.scalekit.com/apis/
-    type: APIReference
-  - url: openapi/scalekit-openapi.yml
-    type: OpenAPI
-  - url: collections/scalekit.postman_collection.json
-    type: PostmanCollection
-  - url: collections/scalekit.opencollection.json
-    type: OpenCollection
-  description: Manage the organization user membership lifecycle - add, update,
-    and remove members, resend invitations, and create and list organization
-    roles and permissions.
-- aid: scalekit:scalekit-agent-m2m-auth-api
-  name: Scalekit Agent / M2M Auth API
   tags:
-  - Agent Auth
-  - M2M
-  - MCP
-  - Connected Accounts
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.scalekit.com/agent-auth/
-  baseURL: https://{environment}.scalekit.com
+  - Users & Memberships
   properties:
-  - url: https://docs.scalekit.com/agent-auth/
-    type: Documentation
-  - url: https://docs.scalekit.com/apis/
-    type: APIReference
-  - url: openapi/scalekit-openapi.yml
-    type: OpenAPI
-  - url: collections/scalekit.postman_collection.json
-    type: PostmanCollection
-  - url: collections/scalekit.opencollection.json
-    type: OpenCollection
-  description: Authenticate AI agents and machine-to-machine clients via OAuth 2.0
-    client credentials, manage connected accounts for third-party connectors
-    (OAuth/API key), generate authorization magic links, and execute tools on
-    behalf of users for MCP and agent workflows.
+  - type: OpenAPI
+    url: openapi/scalekit-users-memberships-api-openapi.yml
+  - type: Documentation
+    url: https://docs.scalekit.com/sso/quickstart/
+  - type: APIReference
+    url: https://docs.scalekit.com/apis/
+  - type: PostmanCollection
+    url: collections/scalekit.postman_collection.json
+  - type: OpenCollection
+    url: collections/scalekit.opencollection.json
+  - type: Documentation
+    url: https://docs.scalekit.com/m2m/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/directory/scim/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/fsa/quickstart/
+  - type: Documentation
+    url: https://docs.scalekit.com/agent-auth/
 common:
 - type: AgenticAccess
   url: agentic-access/scalekit-agentic-access.yml
