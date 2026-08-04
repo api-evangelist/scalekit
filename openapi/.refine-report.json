@@ -1,0 +1,30 @@
+{
+  "provider": "scalekit",
+  "sources": [
+    "scalekit-admin-portal-api-openapi.yml",
+    "scalekit-authentication-api-openapi.yml",
+    "scalekit-connected-accounts-api-openapi.yml",
+    "scalekit-connections-api-openapi.yml",
+    "scalekit-directories-api-openapi.yml",
+    "scalekit-organization-settings-api-openapi.yml",
+    "scalekit-organizations-api-openapi.yml",
+    "scalekit-roles-api-openapi.yml",
+    "scalekit-users-memberships-api-openapi.yml"
+  ],
+  "outputs": [
+    "scalekit-admin-portal-api-openapi.yml",
+    "scalekit-authentication-api-openapi.yml",
+    "scalekit-connected-accounts-api-openapi.yml",
+    "scalekit-connections-api-openapi.yml",
+    "scalekit-directories-api-openapi.yml",
+    "scalekit-organization-settings-api-openapi.yml",
+    "scalekit-organizations-api-openapi.yml",
+    "scalekit-roles-api-openapi.yml",
+    "scalekit-users-memberships-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
