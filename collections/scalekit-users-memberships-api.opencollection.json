@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Scalekit Admin Portal Users & Memberships API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users & Memberships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add a user to an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{environment}.scalekit.com/api/v1/memberships/organizations/:organization_id/users/:id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization identifier."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "User identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a user to an organization"
+        },
+        {
+          "info": {
+            "name": "Update a membership",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{environment}.scalekit.com/api/v1/memberships/organizations/:organization_id/users/:id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization identifier."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "User identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a membership"
+        },
+        {
+          "info": {
+            "name": "Remove a user from an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{environment}.scalekit.com/api/v1/memberships/organizations/:organization_id/users/:id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization identifier."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "User identifier."
+              }
+            ]
+          },
+          "docs": "Remove a user from an organization"
+        },
+        {
+          "info": {
+            "name": "Resend a user invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://{environment}.scalekit.com/api/v1/invites/organizations/:organization_id/users/:id/resend",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization identifier."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "User identifier."
+              }
+            ]
+          },
+          "docs": "Resend a user invitation"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

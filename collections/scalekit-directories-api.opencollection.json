@@ -1,0 +1,142 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Scalekit Admin Portal Directories API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Directories",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List directories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.scalekit.com/api/v1/organizations/:organization_id/directories",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization identifier."
+              }
+            ]
+          },
+          "docs": "List SCIM directories configured for an organization."
+        },
+        {
+          "info": {
+            "name": "Get a directory",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.scalekit.com/api/v1/organizations/:organization_id/directories/:directory_id",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization identifier."
+              },
+              {
+                "name": "directory_id",
+                "value": "",
+                "type": "path",
+                "description": "Directory identifier."
+              }
+            ]
+          },
+          "docs": "Get a directory"
+        },
+        {
+          "info": {
+            "name": "List directory users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.scalekit.com/api/v1/organizations/:organization_id/directories/:directory_id/users",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization identifier."
+              },
+              {
+                "name": "directory_id",
+                "value": "",
+                "type": "path",
+                "description": "Directory identifier."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results per page."
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Fetch users provisioned via SCIM into a directory on demand."
+        },
+        {
+          "info": {
+            "name": "List directory groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.scalekit.com/api/v1/organizations/:organization_id/directories/:directory_id/groups",
+            "params": [
+              {
+                "name": "organization_id",
+                "value": "",
+                "type": "path",
+                "description": "Organization identifier."
+              },
+              {
+                "name": "directory_id",
+                "value": "",
+                "type": "path",
+                "description": "Directory identifier."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results per page."
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "Fetch groups provisioned via SCIM into a directory on demand."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

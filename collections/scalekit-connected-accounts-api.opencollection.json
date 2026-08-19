@@ -1,0 +1,109 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Scalekit Admin Portal Connected Accounts API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Connected Accounts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List connected accounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{environment}.scalekit.com/api/v1/connected_accounts",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results per page."
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Opaque token for the next page of results."
+              }
+            ]
+          },
+          "docs": "List agent connected accounts (authorized third-party connectors)."
+        },
+        {
+          "info": {
+            "name": "Create a connected account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{environment}.scalekit.com/api/v1/connected_accounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a connected account"
+        },
+        {
+          "info": {
+            "name": "Update connected account credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{environment}.scalekit.com/api/v1/connected_accounts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update connected account credentials"
+        },
+        {
+          "info": {
+            "name": "Generate an authorization magic link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{environment}.scalekit.com/api/v1/connected_accounts/magic_link",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate an authorization magic link"
+        },
+        {
+          "info": {
+            "name": "Execute a tool",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{environment}.scalekit.com/api/v1/execute_tool",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute a tool action on behalf of a user through a connected account (e.g. fetch emails, create a CRM record). Core of the agent / MCP auth product."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

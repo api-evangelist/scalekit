@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Scalekit Admin Portal API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Admin Portal",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate an admin portal link",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{environment}.scalekit.com/api/v1/organizations/:id/portal_links",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Organization identifier."
+              }
+            ]
+          },
+          "docs": "Generate a self-service admin portal link that an organization administrator can use to configure SSO and SCIM without leaving your application."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
