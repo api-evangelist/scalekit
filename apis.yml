@@ -195,6 +195,8 @@ apis:
   humanURL: https://docs.scalekit.com/apis/
   baseURL: https://{environment}.scalekit.com
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
