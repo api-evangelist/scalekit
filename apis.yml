@@ -8,6 +8,18 @@ description: Scalekit is the authentication platform for B2B SaaS and AI agents.
   (M2M) auth, and agent / MCP authentication with connected accounts and tool
   execution - all exposed through a per-environment REST API secured with OAuth
   2.0 client credentials.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
