@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Scalekit Admin Portal Roles API
+  title: Scalekit Roles API
   description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
   termsOfService: https://www.scalekit.com/legal/terms-of-service
   contact:
@@ -70,36 +70,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    RoleRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        display_name:
-          type: string
-        description:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
-    Role:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        display_name:
-          type: string
-        description:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
     ListRolesResponse:
       type: object
       properties:
@@ -118,6 +88,36 @@ components:
           type: array
           items:
             type: object
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        description:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
+    RoleRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        display_name:
+          type: string
+        description:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
   responses:
     NotFound:
       description: The requested resource was not found.

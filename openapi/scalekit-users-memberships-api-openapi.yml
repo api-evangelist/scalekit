@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Scalekit Admin Portal Users & Memberships API
+  title: Scalekit Users & Memberships API
   description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
   termsOfService: https://www.scalekit.com/legal/terms-of-service
   contact:
@@ -100,21 +100,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    UserId:
-      name: id
-      in: path
-      required: true
-      description: User identifier.
-      schema:
-        type: string
-    OrganizationIdPath:
-      name: organization_id
-      in: path
-      required: true
-      description: Organization identifier.
-      schema:
-        type: string
   schemas:
     Membership:
       type: object
@@ -132,17 +117,6 @@ components:
           enum:
           - PENDING_INVITE
           - ACTIVE
-    MembershipRequest:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
     Error:
       type: object
       properties:
@@ -154,6 +128,17 @@ components:
           type: array
           items:
             type: object
+    MembershipRequest:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
   responses:
     NotFound:
       description: The requested resource was not found.
@@ -161,6 +146,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationIdPath:
+      name: organization_id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
+    UserId:
+      name: id
+      in: path
+      required: true
+      description: User identifier.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

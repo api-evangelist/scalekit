@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Scalekit Admin Portal Authentication API
+  title: Scalekit Authentication API
   description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
   termsOfService: https://www.scalekit.com/legal/terms-of-service
   contact:
@@ -51,25 +51,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Authentication failed or access token missing/expired.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    TokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-          example: Bearer
-        expires_in:
-          type: integer
-          description: Lifetime in seconds.
     Error:
       type: object
       properties:
@@ -81,6 +63,17 @@ components:
           type: array
           items:
             type: object
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Lifetime in seconds.
     TokenRequest:
       type: object
       required:
@@ -96,6 +89,13 @@ components:
           type: string
         client_secret:
           type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed or access token missing/expired.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

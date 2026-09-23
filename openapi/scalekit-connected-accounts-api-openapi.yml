@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Scalekit Admin Portal Connected Accounts API
+  title: Scalekit Connected Accounts API
   description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
   termsOfService: https://www.scalekit.com/legal/terms-of-service
   contact:
@@ -131,6 +131,14 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    ExecuteToolResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+        execution_id:
+          type: string
     ExecuteToolRequest:
       type: object
       required:
@@ -147,46 +155,6 @@ components:
         tool_input:
           type: object
           additionalProperties: true
-    MagicLinkRequest:
-      type: object
-      required:
-      - connector
-      - identifier
-      properties:
-        connector:
-          type: string
-        identifier:
-          type: string
-    ExecuteToolResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties: true
-        execution_id:
-          type: string
-    ConnectedAccountRequest:
-      type: object
-      required:
-      - connector
-      - identifier
-      properties:
-        connector:
-          type: string
-        identifier:
-          type: string
-        authorization_details:
-          type: object
-          additionalProperties: true
-    ListConnectedAccountsResponse:
-      type: object
-      properties:
-        connected_accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectedAccount'
-        next_page_token:
-          type: string
     Error:
       type: object
       properties:
@@ -198,15 +166,15 @@ components:
           type: array
           items:
             type: object
-    MagicLink:
+    ListConnectedAccountsResponse:
       type: object
       properties:
-        link:
+        connected_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedAccount'
+        next_page_token:
           type: string
-          format: uri
-        expire_time:
-          type: string
-          format: date-time
     ConnectedAccount:
       type: object
       properties:
@@ -231,6 +199,38 @@ components:
         create_time:
           type: string
           format: date-time
+    ConnectedAccountRequest:
+      type: object
+      required:
+      - connector
+      - identifier
+      properties:
+        connector:
+          type: string
+        identifier:
+          type: string
+        authorization_details:
+          type: object
+          additionalProperties: true
+    MagicLinkRequest:
+      type: object
+      required:
+      - connector
+      - identifier
+      properties:
+        connector:
+          type: string
+        identifier:
+          type: string
+    MagicLink:
+      type: object
+      properties:
+        link:
+          type: string
+          format: uri
+        expire_time:
+          type: string
+          format: date-time
   responses:
     Unauthorized:
       description: Authentication failed or access token missing/expired.
@@ -239,6 +239,13 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   parameters:
+    PageToken:
+      name: page_token
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
+      schema:
+        type: string
     PageSize:
       name: page_size
       in: query
@@ -247,13 +254,6 @@ components:
       schema:
         type: integer
         default: 20
-    PageToken:
-      name: page_token
-      in: query
-      required: false
-      description: Opaque token for the next page of results.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

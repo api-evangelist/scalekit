@@ -1,0 +1,31 @@
+# Front Door AI Index — scalekit — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: scalekit
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.scalekit.com
+  final_host: www.scalekit.com
+  ownership: own
+  owner: scalekit
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 21
+  host_score: 21
+  density: 13.35
+  words: 1573
+  tiers:
+    agentic: 8
+    core: 11
+    model: 2
+  ambiguous: 41
+  top_terms:
+    agent: 41
+    AI: 10
+    MCP: 7
+    AI agent: 1
+    Anthropic: 1
+    LLMs: 1
+    OpenAI: 1

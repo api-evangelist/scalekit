@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Scalekit Admin Portal API
   description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
@@ -46,15 +46,17 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    OrganizationId:
-      name: id
-      in: path
-      required: true
-      description: Organization identifier.
-      schema:
-        type: string
   schemas:
+    PortalLink:
+      type: object
+      properties:
+        location:
+          type: string
+          format: uri
+          description: The admin portal URL.
+        expire_time:
+          type: string
+          format: date-time
     Error:
       type: object
       properties:
@@ -66,16 +68,6 @@ components:
           type: array
           items:
             type: object
-    PortalLink:
-      type: object
-      properties:
-        location:
-          type: string
-          format: uri
-          description: The admin portal URL.
-        expire_time:
-          type: string
-          format: date-time
   responses:
     NotFound:
       description: The requested resource was not found.
@@ -83,6 +75,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationId:
+      name: id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

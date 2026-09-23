@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Scalekit Admin Portal Organizations API
+  title: Scalekit Organizations API
   description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
   termsOfService: https://www.scalekit.com/legal/terms-of-service
   contact:
@@ -113,29 +113,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    OrganizationId:
-      name: id
-      in: path
-      required: true
-      description: Organization identifier.
-      schema:
-        type: string
-    PageSize:
-      name: page_size
-      in: query
-      required: false
-      description: Maximum number of results per page.
-      schema:
-        type: integer
-        default: 20
-    PageToken:
-      name: page_token
-      in: query
-      required: false
-      description: Opaque token for the next page of results.
-      schema:
-        type: string
   schemas:
     OrganizationSettings:
       type: object
@@ -150,45 +127,6 @@ components:
                 example: sso
               enabled:
                 type: boolean
-    UpdateOrganizationRequest:
-      type: object
-      properties:
-        display_name:
-          type: string
-        external_id:
-          type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-    OrganizationResponse:
-      type: object
-      properties:
-        organization:
-          $ref: '#/components/schemas/Organization'
-    Organization:
-      type: object
-      properties:
-        id:
-          type: string
-        external_id:
-          type: string
-        display_name:
-          type: string
-        region_code:
-          type: string
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-        settings:
-          $ref: '#/components/schemas/OrganizationSettings'
-        create_time:
-          type: string
-          format: date-time
-        update_time:
-          type: string
-          format: date-time
     CreateOrganizationRequest:
       type: object
       required:
@@ -213,6 +151,45 @@ components:
           type: array
           items:
             type: object
+    UpdateOrganizationRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        external_id:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+        external_id:
+          type: string
+        display_name:
+          type: string
+        region_code:
+          type: string
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        settings:
+          $ref: '#/components/schemas/OrganizationSettings'
+        create_time:
+          type: string
+          format: date-time
+        update_time:
+          type: string
+          format: date-time
+    OrganizationResponse:
+      type: object
+      properties:
+        organization:
+          $ref: '#/components/schemas/Organization'
     ListOrganizationsResponse:
       type: object
       properties:
@@ -225,18 +202,41 @@ components:
         total_size:
           type: integer
   responses:
-    Unauthorized:
-      description: Authentication failed or access token missing/expired.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     NotFound:
       description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication failed or access token missing/expired.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationId:
+      name: id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
+    PageToken:
+      name: page_token
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
+      schema:
+        type: string
+    PageSize:
+      name: page_size
+      in: query
+      required: false
+      description: Maximum number of results per page.
+      schema:
+        type: integer
+        default: 20
   securitySchemes:
     bearerAuth:
       type: http

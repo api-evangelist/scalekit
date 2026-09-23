@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Scalekit Admin Portal Organization Settings API
+  title: Scalekit Organization Settings API
   description: Scalekit is the authentication platform for B2B SaaS and AI agents. The REST API provides programmatic access to enterprise Single Sign-On (SAML / OIDC connections), SCIM directory provisioning, organizations, users and memberships, organization roles, machine-to-machine (M2M) authentication, and agent / MCP connected accounts and tool execution. The API base URL is per-environment; access tokens are obtained via the OAuth 2.0 client credentials grant and passed as Bearer tokens.
   termsOfService: https://www.scalekit.com/legal/terms-of-service
   contact:
@@ -52,14 +52,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    OrganizationId:
-      name: id
-      in: path
-      required: true
-      description: Organization identifier.
-      schema:
-        type: string
   schemas:
     OrganizationSettings:
       type: object
@@ -74,11 +66,17 @@ components:
                 example: sso
               enabled:
                 type: boolean
-    OrganizationResponse:
+    Error:
       type: object
       properties:
-        organization:
-          $ref: '#/components/schemas/Organization'
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
     Organization:
       type: object
       properties:
@@ -102,17 +100,11 @@ components:
         update_time:
           type: string
           format: date-time
-    Error:
+    OrganizationResponse:
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
+        organization:
+          $ref: '#/components/schemas/Organization'
   responses:
     NotFound:
       description: The requested resource was not found.
@@ -120,6 +112,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationId:
+      name: id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http
