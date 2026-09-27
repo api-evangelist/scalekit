@@ -100,7 +100,40 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    UserId:
+      name: id
+      in: path
+      required: true
+      description: User identifier.
+      schema:
+        type: string
+    OrganizationIdPath:
+      name: organization_id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
   schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
     Membership:
       type: object
       properties:
@@ -117,17 +150,6 @@ components:
           enum:
           - PENDING_INVITE
           - ACTIVE
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
     MembershipRequest:
       type: object
       properties:
@@ -139,28 +161,6 @@ components:
           type: object
           additionalProperties:
             type: string
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    OrganizationIdPath:
-      name: organization_id
-      in: path
-      required: true
-      description: Organization identifier.
-      schema:
-        type: string
-    UserId:
-      name: id
-      in: path
-      required: true
-      description: User identifier.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http
