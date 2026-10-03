@@ -131,38 +131,15 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    ConnectedAccount:
+    MagicLinkRequest:
       type: object
+      required:
+      - connector
+      - identifier
       properties:
-        id:
-          type: string
         connector:
           type: string
-          example: gmail
         identifier:
-          type: string
-        status:
-          type: string
-          enum:
-          - PENDING
-          - ACTIVE
-          - REVOKED
-        authorization_type:
-          type: string
-          enum:
-          - OAUTH2
-          - API_KEY
-        create_time:
-          type: string
-          format: date-time
-    ListConnectedAccountsResponse:
-      type: object
-      properties:
-        connected_accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectedAccount'
-        next_page_token:
           type: string
     ExecuteToolRequest:
       type: object
@@ -191,6 +168,47 @@ components:
           type: array
           items:
             type: object
+    ListConnectedAccountsResponse:
+      type: object
+      properties:
+        connected_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedAccount'
+        next_page_token:
+          type: string
+    ExecuteToolResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+        execution_id:
+          type: string
+    ConnectedAccount:
+      type: object
+      properties:
+        id:
+          type: string
+        connector:
+          type: string
+          example: gmail
+        identifier:
+          type: string
+        status:
+          type: string
+          enum:
+          - PENDING
+          - ACTIVE
+          - REVOKED
+        authorization_type:
+          type: string
+          enum:
+          - OAUTH2
+          - API_KEY
+        create_time:
+          type: string
+          format: date-time
     ConnectedAccountRequest:
       type: object
       required:
@@ -204,16 +222,6 @@ components:
         authorization_details:
           type: object
           additionalProperties: true
-    MagicLinkRequest:
-      type: object
-      required:
-      - connector
-      - identifier
-      properties:
-        connector:
-          type: string
-        identifier:
-          type: string
     MagicLink:
       type: object
       properties:
@@ -223,14 +231,6 @@ components:
         expire_time:
           type: string
           format: date-time
-    ExecuteToolResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties: true
-        execution_id:
-          type: string
   parameters:
     PageSize:
       name: page_size

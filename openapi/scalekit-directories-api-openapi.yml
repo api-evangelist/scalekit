@@ -108,18 +108,14 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ListDirectoryUsersResponse:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/DirectoryUser'
-        next_page_token:
-          type: string
-        total_size:
-          type: integer
     DirectoryGroup:
       type: object
       properties:
@@ -129,30 +125,6 @@ components:
           type: string
         external_id:
           type: string
-    Directory:
-      type: object
-      properties:
-        id:
-          type: string
-        organization_id:
-          type: string
-        directory_type:
-          type: string
-          example: SCIM
-        directory_provider:
-          type: string
-          example: okta
-        status:
-          type: string
-          enum:
-          - PENDING
-          - ACTIVE
-          - INACTIVE
-        enabled:
-          type: boolean
-        last_sync_time:
-          type: string
-          format: date-time
     Error:
       type: object
       properties:
@@ -173,6 +145,17 @@ components:
             $ref: '#/components/schemas/DirectoryGroup'
         next_page_token:
           type: string
+    ListDirectoryUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/DirectoryUser'
+        next_page_token:
+          type: string
+        total_size:
+          type: integer
     ListDirectoriesResponse:
       type: object
       properties:
@@ -201,14 +184,45 @@ components:
           type: array
           items:
             type: string
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Directory:
+      type: object
+      properties:
+        id:
+          type: string
+        organization_id:
+          type: string
+        directory_type:
+          type: string
+          example: SCIM
+        directory_provider:
+          type: string
+          example: okta
+        status:
+          type: string
+          enum:
+          - PENDING
+          - ACTIVE
+          - INACTIVE
+        enabled:
+          type: boolean
+        last_sync_time:
+          type: string
+          format: date-time
   parameters:
+    DirectoryId:
+      name: directory_id
+      in: path
+      required: true
+      description: Directory identifier.
+      schema:
+        type: string
+    OrganizationIdPath:
+      name: organization_id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
     PageSize:
       name: page_size
       in: query
@@ -222,20 +236,6 @@ components:
       in: query
       required: false
       description: Opaque token for the next page of results.
-      schema:
-        type: string
-    OrganizationIdPath:
-      name: organization_id
-      in: path
-      required: true
-      description: Organization identifier.
-      schema:
-        type: string
-    DirectoryId:
-      name: directory_id
-      in: path
-      required: true
-      description: Directory identifier.
       schema:
         type: string
   securitySchemes:
