@@ -281,6 +281,9 @@ apis:
   - type: Documentation
     url: https://docs.scalekit.com/agent-auth/
 common:
+- type: CapabilityMap
+  url: capabilities/scalekit-capability-edges.yml
+  name: Scalekit Business Capability Map
 - type: AgenticAccess
   url: agentic-access/scalekit-agentic-access.yml
 - type: DomainSecurity

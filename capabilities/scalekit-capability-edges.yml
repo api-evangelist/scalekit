@@ -1,0 +1,68 @@
+slug: scalekit
+provider: Scalekit
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: Directories
+  spec_file: scalekit-directories-api-openapi.yml
+  capability_id: BC-4230.50
+  capability_id_l1: BC-4230
+  capability_name: Tenant Identity Federation
+  confidence: 0.8
+  evidence: GET /api/v1/organizations/{organization_id}/directories/{directory_id}/users  List directory
+    users; schemas DirectoryUser, DirectoryGroup
+  reason: These endpoints expose SCIM-provisioned directories, users and groups per customer organization,
+    which is precisely tenant identity federation via SSO and SCIM.
+- tag: Connections
+  spec_file: scalekit-connections-api-openapi.yml
+  capability_id: BC-4230.50
+  capability_id_l1: BC-4230
+  capability_name: Tenant Identity Federation
+  confidence: 0.75
+  evidence: GET /api/v1/organizations/{organization_id}/connections  List an organization's connections
+    — 'enterprise Single Sign-On (SAML / OIDC connections)'
+  reason: Connections are per-organization SAML/OIDC single sign-on configurations, matching federation
+    of tenant identity providers. Read-only surface, hence not maximal confidence.
+- tag: Organizations
+  spec_file: scalekit-organizations-api-openapi.yml
+  capability_id: BC-4230.10
+  capability_id_l1: BC-4230
+  capability_name: Tenant Provisioning & Lifecycle
+  confidence: 0.75
+  evidence: POST /api/v1/organizations  Create an organization; DELETE /api/v1/organizations/{id}  Delete
+    an organization
+  reason: Organizations are the customer tenants of the B2B SaaS using Scalekit, and the operations create,
+    update and delete them — tenant provisioning and lifecycle. Some residual ambiguity with tenant identity
+    federation since organizations exist chiefly to anchor SSO/SCIM config.
+- tag: Roles
+  spec_file: scalekit-roles-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: GET /api/v1/organizations/{org_id}/roles  listRoles  List organization roles; POST ... createRole  Create
+    an organization role
+  reason: Scalekit is an authentication/identity platform; this tag defines and lists role objects used
+    for authorisation within customer organizations, i.e. role-based access control administration. That
+    is Identity & Access Management, not HR role/job management.
+- tag: Users & Memberships
+  spec_file: scalekit-users-memberships-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: addMembership  Add a user to an organization; removeMembership  Remove a user from an organization;
+    resendInvite  Resend a user invitation
+  reason: Operations manage user account membership of organizations and invitations within an auth platform
+    ('full-stack user management', SCIM provisioning) — joiner/mover/leaver style identity and access
+    administration rather than any HR or CRM capability.
