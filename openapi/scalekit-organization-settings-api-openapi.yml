@@ -60,22 +60,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-    OrganizationResponse:
-      type: object
-      properties:
-        organization:
-          $ref: '#/components/schemas/Organization'
     OrganizationSettings:
       type: object
       properties:
@@ -112,6 +96,22 @@ components:
         update_time:
           type: string
           format: date-time
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+    OrganizationResponse:
+      type: object
+      properties:
+        organization:
+          $ref: '#/components/schemas/Organization'
   parameters:
     OrganizationId:
       name: id

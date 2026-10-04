@@ -141,50 +141,6 @@ components:
           type: string
         identifier:
           type: string
-    ExecuteToolRequest:
-      type: object
-      required:
-      - tool_name
-      - identifier
-      properties:
-        tool_name:
-          type: string
-        connection_name:
-          type: string
-        identifier:
-          type: string
-          description: The connected account identifier to act on behalf of.
-        tool_input:
-          type: object
-          additionalProperties: true
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        details:
-          type: array
-          items:
-            type: object
-    ListConnectedAccountsResponse:
-      type: object
-      properties:
-        connected_accounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/ConnectedAccount'
-        next_page_token:
-          type: string
-    ExecuteToolResponse:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties: true
-        execution_id:
-          type: string
     ConnectedAccount:
       type: object
       properties:
@@ -209,6 +165,23 @@ components:
         create_time:
           type: string
           format: date-time
+    ExecuteToolResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+        execution_id:
+          type: string
+    MagicLink:
+      type: object
+      properties:
+        link:
+          type: string
+          format: uri
+        expire_time:
+          type: string
+          format: date-time
     ConnectedAccountRequest:
       type: object
       required:
@@ -222,15 +195,49 @@ components:
         authorization_details:
           type: object
           additionalProperties: true
-    MagicLink:
+    Error:
       type: object
       properties:
-        link:
+        code:
           type: string
-          format: uri
-        expire_time:
+        message:
           type: string
-          format: date-time
+        details:
+          type: array
+          items:
+            type: object
+    ListConnectedAccountsResponse:
+      type: object
+      properties:
+        connected_accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedAccount'
+        next_page_token:
+          type: string
+    ExecuteToolRequest:
+      type: object
+      required:
+      - tool_name
+      - identifier
+      properties:
+        tool_name:
+          type: string
+        connection_name:
+          type: string
+        identifier:
+          type: string
+          description: The connected account identifier to act on behalf of.
+        tool_input:
+          type: object
+          additionalProperties: true
+  responses:
+    Unauthorized:
+      description: Authentication failed or access token missing/expired.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     PageSize:
       name: page_size
@@ -247,13 +254,6 @@ components:
       description: Opaque token for the next page of results.
       schema:
         type: string
-  responses:
-    Unauthorized:
-      description: Authentication failed or access token missing/expired.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

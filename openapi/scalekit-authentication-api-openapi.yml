@@ -51,13 +51,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    Unauthorized:
-      description: Authentication failed or access token missing/expired.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     TokenRequest:
       type: object
@@ -74,17 +67,6 @@ components:
           type: string
         client_secret:
           type: string
-    TokenResponse:
-      type: object
-      properties:
-        access_token:
-          type: string
-        token_type:
-          type: string
-          example: Bearer
-        expires_in:
-          type: integer
-          description: Lifetime in seconds.
     Error:
       type: object
       properties:
@@ -96,6 +78,24 @@ components:
           type: array
           items:
             type: object
+    TokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          description: Lifetime in seconds.
+  responses:
+    Unauthorized:
+      description: Authentication failed or access token missing/expired.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

@@ -108,22 +108,45 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    DirectoryId:
+      name: directory_id
+      in: path
+      required: true
+      description: Directory identifier.
+      schema:
+        type: string
+    PageSize:
+      name: page_size
+      in: query
+      required: false
+      description: Maximum number of results per page.
+      schema:
+        type: integer
+        default: 20
+    OrganizationIdPath:
+      name: organization_id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
+    PageToken:
+      name: page_token
+      in: query
+      required: false
+      description: Opaque token for the next page of results.
+      schema:
+        type: string
   schemas:
-    DirectoryGroup:
+    ListDirectoryGroupsResponse:
       type: object
       properties:
-        id:
-          type: string
-        display_name:
-          type: string
-        external_id:
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/DirectoryGroup'
+        next_page_token:
           type: string
     Error:
       type: object
@@ -136,26 +159,6 @@ components:
           type: array
           items:
             type: object
-    ListDirectoryGroupsResponse:
-      type: object
-      properties:
-        groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/DirectoryGroup'
-        next_page_token:
-          type: string
-    ListDirectoryUsersResponse:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/DirectoryUser'
-        next_page_token:
-          type: string
-        total_size:
-          type: integer
     ListDirectoriesResponse:
       type: object
       properties:
@@ -165,25 +168,6 @@ components:
             $ref: '#/components/schemas/Directory'
         next_page_token:
           type: string
-    DirectoryUser:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-        preferred_username:
-          type: string
-        given_name:
-          type: string
-        family_name:
-          type: string
-        active:
-          type: boolean
-        roles:
-          type: array
-          items:
-            type: string
     Directory:
       type: object
       properties:
@@ -208,36 +192,52 @@ components:
         last_sync_time:
           type: string
           format: date-time
-  parameters:
-    DirectoryId:
-      name: directory_id
-      in: path
-      required: true
-      description: Directory identifier.
-      schema:
-        type: string
-    OrganizationIdPath:
-      name: organization_id
-      in: path
-      required: true
-      description: Organization identifier.
-      schema:
-        type: string
-    PageSize:
-      name: page_size
-      in: query
-      required: false
-      description: Maximum number of results per page.
-      schema:
-        type: integer
-        default: 20
-    PageToken:
-      name: page_token
-      in: query
-      required: false
-      description: Opaque token for the next page of results.
-      schema:
-        type: string
+    DirectoryGroup:
+      type: object
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        external_id:
+          type: string
+    DirectoryUser:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        preferred_username:
+          type: string
+        given_name:
+          type: string
+        family_name:
+          type: string
+        active:
+          type: boolean
+        roles:
+          type: array
+          items:
+            type: string
+    ListDirectoryUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/DirectoryUser'
+        next_page_token:
+          type: string
+        total_size:
+          type: integer
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http

@@ -70,6 +70,28 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    ListRolesResponse:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        display_name:
+          type: string
+        description:
+          type: string
+        permissions:
+          type: array
+          items:
+            type: string
     RoleRequest:
       type: object
       required:
@@ -96,28 +118,6 @@ components:
           type: array
           items:
             type: object
-    ListRolesResponse:
-      type: object
-      properties:
-        roles:
-          type: array
-          items:
-            $ref: '#/components/schemas/Role'
-    Role:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        display_name:
-          type: string
-        description:
-          type: string
-        permissions:
-          type: array
-          items:
-            type: string
   responses:
     NotFound:
       description: The requested resource was not found.

@@ -46,24 +46,15 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationId:
+      name: id
+      in: path
+      required: true
+      description: Organization identifier.
+      schema:
+        type: string
   schemas:
-    PortalLink:
-      type: object
-      properties:
-        location:
-          type: string
-          format: uri
-          description: The admin portal URL.
-        expire_time:
-          type: string
-          format: date-time
     Error:
       type: object
       properties:
@@ -75,14 +66,23 @@ components:
           type: array
           items:
             type: object
-  parameters:
-    OrganizationId:
-      name: id
-      in: path
-      required: true
-      description: Organization identifier.
-      schema:
-        type: string
+    PortalLink:
+      type: object
+      properties:
+        location:
+          type: string
+          format: uri
+          description: The admin portal URL.
+        expire_time:
+          type: string
+          format: date-time
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     bearerAuth:
       type: http
