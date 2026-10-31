@@ -1,4 +1,4 @@
-# Scalekit (scalekit)
+# Scalekit
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,142 +66,146 @@
 
 Scalekit is the authentication platform for B2B SaaS and AI agents. It provides drop-in enterprise Single Sign-On (SAML/OIDC), SCIM directory provisioning, social login, full-stack user management, machine-to-machine (M2M) auth, and agent / MCP authentication with connected accounts and tool execution - all exposed through a per-environment REST API secured with OAuth 2.0 client credentials.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/scalekit/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/scalekit/refs/heads/main/apis.yml)
+**Areas:** Authentication · SSO · SCIM · Identity · B2B SaaS · Agent Auth · Identity Federation
 
-## Tags
+## Scalekit on APIs.io
 
-- Authentication
-- SSO
-- SCIM
-- Identity
-- B2B SaaS
-- Agent Auth
+Everything profiled for Scalekit is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/scalekit/](https://apis.io/providers/scalekit/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (9)
 
-- **Created:** 2026-06-20
-- **Modified:** 2026-06-20
+- [Scalekit Admin Portal API](https://apis.io/apis/scalekit/scalekit-admin-portal-api/) — Generate self-service admin portal links.
+- [Scalekit Authentication API](https://apis.io/apis/scalekit/scalekit-authentication-api/) — OAuth 2.0 client credentials token issuance.
+- [Scalekit Connected Accounts API](https://apis.io/apis/scalekit/scalekit-connected-accounts-api/) — Agent / MCP connected accounts and tool execution.
+- [Scalekit Connections API](https://apis.io/apis/scalekit/scalekit-connections-api/) — Enterprise SSO connections (SAML / OIDC).
+- [Scalekit Directories API](https://apis.io/apis/scalekit/scalekit-directories-api/) — SCIM directories and synced directory users and groups.
+- [Scalekit Organization Settings API](https://apis.io/apis/scalekit/scalekit-organization-settings-api/) — Toggle feature settings on an organization.
+- [Scalekit Organizations API](https://apis.io/apis/scalekit/scalekit-organizations-api/) — Create and manage tenant organizations.
+- [Scalekit Roles API](https://apis.io/apis/scalekit/scalekit-roles-api/) — Organization roles and permissions.
+- [Scalekit Users & Memberships API](https://apis.io/apis/scalekit/scalekit-users-memberships-api/) — Organization user membership lifecycle and invitations.
 
-## APIs
+### Published properties
 
-### Scalekit SSO Connections API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Configure and manage enterprise Single Sign-On connections (SAML and OIDC) per organization, list connections, and retrieve connection status and configuration details.
+#### MCP servers (1)
 
-- **Human URL:** [https://docs.scalekit.com/apis/](https://docs.scalekit.com/apis/)
-- **Base URL:** `https://{environment}.scalekit.com`
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags
+- [scalekit](https://apis.io/servers/scalekit/scalekit/)
 
-- SSO
-- SAML
-- OIDC
-- Connections
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Documentation](https://docs.scalekit.com/sso/quickstart/)
-- [API Reference](https://docs.scalekit.com/apis/)
-- [OpenAPI](openapi/scalekit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/scalekit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/scalekit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Scalekit Agentic Access](https://apis.io/agentic-access/scalekit/scalekit-agentic-access/)
 
-### Scalekit Organizations API
+#### Collections (10)
 
-Create, read, update, and delete tenant organizations, toggle per-organization feature settings, and generate self-service admin portal links for SSO and SCIM configuration.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://docs.scalekit.com/apis/](https://docs.scalekit.com/apis/)
-- **Base URL:** `https://{environment}.scalekit.com`
+- [Scalekit API](https://apis.io/collections/scalekit/open-scalekit/)
+- [Scalekit Admin Portal API](https://apis.io/collections/scalekit/open-scalekit-admin-portal-api/)
+- [Scalekit Admin Portal Authentication API](https://apis.io/collections/scalekit/open-scalekit-authentication-api/)
+- [Scalekit Admin Portal Connected Accounts API](https://apis.io/collections/scalekit/open-scalekit-connected-accounts-api/)
+- [Scalekit Admin Portal Connections API](https://apis.io/collections/scalekit/open-scalekit-connections-api/)
+- [Scalekit Admin Portal Directories API](https://apis.io/collections/scalekit/open-scalekit-directories-api/)
+- [Scalekit Admin Portal Organization Settings API](https://apis.io/collections/scalekit/open-scalekit-organization-settings-api/)
+- [Scalekit Admin Portal Organizations API](https://apis.io/collections/scalekit/open-scalekit-organizations-api/)
+- [Scalekit Admin Portal Roles API](https://apis.io/collections/scalekit/open-scalekit-roles-api/)
+- [Scalekit Admin Portal Users & Memberships API](https://apis.io/collections/scalekit/open-scalekit-users-memberships-api/)
 
-#### Tags
+#### Security (2)
 
-- Organizations
-- Tenants
-- Admin Portal
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Scalekit Authentication](https://apis.io/security/scalekit/scalekit-authentication/)
+- [Scalekit Domain Security](https://apis.io/security/scalekit/scalekit-domain-security/)
 
-- [Documentation](https://docs.scalekit.com/m2m/quickstart/)
-- [API Reference](https://docs.scalekit.com/apis/)
-- [OpenAPI](openapi/scalekit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/scalekit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/scalekit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### OAuth scopes (1)
 
-### Scalekit Directory / SCIM API
+The permissions the API asks for.
 
-List directories, fetch SCIM-provisioned directory users and groups on demand, and keep application user data in sync with the customer's upstream identity provider.
+- [Scalekit Scopes](https://apis.io/scopes/scalekit/scalekit-scopes/)
 
-- **Human URL:** [https://docs.scalekit.com/directory/scim/quickstart/](https://docs.scalekit.com/directory/scim/quickstart/)
-- **Base URL:** `https://{environment}.scalekit.com`
+#### Plans and pricing (1)
 
-#### Tags
+Published plans, tiers and prices.
 
-- SCIM
-- Directory
-- Provisioning
+- [Scalekit Plans Pricing](https://apis.io/plans/scalekit/scalekit-plans-pricing/)
 
-#### Properties
+#### Rate limits (1)
 
-- [Documentation](https://docs.scalekit.com/directory/scim/quickstart/)
-- [API Reference](https://docs.scalekit.com/apis/)
-- [OpenAPI](openapi/scalekit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/scalekit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/scalekit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Published request limits.
 
-### Scalekit Users & Memberships API
+- [Scalekit Rate Limits](https://apis.io/rate-limits/scalekit/scalekit-rate-limits/)
 
-Manage the organization user membership lifecycle - add, update, and remove members, resend invitations, and create and list organization roles and permissions.
+#### FinOps (1)
 
-- **Human URL:** [https://docs.scalekit.com/apis/](https://docs.scalekit.com/apis/)
-- **Base URL:** `https://{environment}.scalekit.com`
+What the API costs to run, by operation.
 
-#### Tags
+- [Scalekit Finops](https://apis.io/finops/scalekit/scalekit-finops/)
 
-- Users
-- Memberships
-- Roles
+## Where to find this API
 
-#### Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-- [Documentation](https://docs.scalekit.com/fsa/quickstart/)
-- [API Reference](https://docs.scalekit.com/apis/)
-- [OpenAPI](openapi/scalekit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/scalekit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/scalekit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Scalekit Agent / M2M Auth API
-
-Authenticate AI agents and machine-to-machine clients via OAuth 2.0 client credentials, manage connected accounts for third-party connectors (OAuth/API key), generate authorization magic links, and execute tools on behalf of users for MCP and agent workflows.
-
-- **Human URL:** [https://docs.scalekit.com/agent-auth/](https://docs.scalekit.com/agent-auth/)
-- **Base URL:** `https://{environment}.scalekit.com`
-
-#### Tags
-
-- Agent Auth
-- M2M
-- MCP
-- Connected Accounts
-
-#### Properties
-
-- [Documentation](https://docs.scalekit.com/agent-auth/)
-- [API Reference](https://docs.scalekit.com/apis/)
-- [OpenAPI](openapi/scalekit-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/scalekit.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/scalekit.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/scalekit-inc)
-- [LinkedIn](https://www.linkedin.com/company/scalekit)
 - [Website](https://www.scalekit.com)
 - [Documentation](https://docs.scalekit.com)
-- [Plans](plans/scalekit-plans-pricing.yml)
-- [Rate Limits](rate-limits/scalekit-rate-limits.yml)
-- [Fin Ops](finops/scalekit-finops.yml)
+- [Blog](https://www.scalekit.com/blog)
+- [GitHub](https://github.com/scalekit-inc)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 31.2** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 48.0 |
+| Contract governance | 0.0 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 7.9 |
+
+**Agent readiness 31.6** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 21.6** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/scalekit/](https://apis.io/providers/scalekit/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Scalekit: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/scalekit/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
